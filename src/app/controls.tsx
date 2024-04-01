@@ -16,14 +16,26 @@ export const PlotlyControls = ({ figure, setRevision }: Props) => {
     reRender()
   }
 
-  const isAxisVisible = (axisIndex: number) => {
-    const key = `yaxis${axisIndex > 0 ? axisIndex + 1 : ''}` as keyof Layout
-    return ((figure.layout as Layout)[key] as LayoutAxis).visible
+  const isAxisVisible = (axisIndex: number, axis: 'y' | 'x') => {
+    if (axis === 'y') {
+      const key = `yaxis${axisIndex > 0 ? axisIndex + 1 : ''}` as keyof Layout
+      return ((figure.layout as Layout)[key] as LayoutAxis).visible
+    }
+    if (axis === 'x') {
+      const key = `xaxis${axisIndex > 0 ? axisIndex + 1 : ''}` as keyof Layout
+      return ((figure.layout as Layout)[key] as LayoutAxis).visible
+    }
+    return false
   }
 
-  const onToggleAxis = (axisIndex: number, visible: boolean) => {
+  const onToggleAxis = (axisIndex: number, axis: 'y' | 'x', visible: boolean) => {
     for (let i = 0; i < figure.data.length; i++) {
-      const key = `yaxis${i > 0 ? i + 1 : ''}` as keyof Layout
+      let key
+      if (axis === 'y') {
+        key = `yaxis${i > 0 ? i + 1 : ''}` as keyof Layout
+      } else {
+        key = `xaxis${i > 0 ? i + 1 : ''}` as keyof Layout
+      }
       if (i === axisIndex) {
         ((figure.layout as Layout)[key] as LayoutAxis).visible = visible
       } else {
@@ -37,7 +49,11 @@ export const PlotlyControls = ({ figure, setRevision }: Props) => {
   const isOverlayActive = () => {
     let isOverlay = false
     for (let i = 0; i < figure.data.length; i++) {
-      if ((figure.data[i] as ScatterData).yaxis !== 'y') {
+      const dataItem = figure.data[i] as ScatterData
+      if (
+        (dataItem.xaxis && dataItem.xaxis !== 'x') ||
+        (dataItem.yaxis && dataItem.yaxis !== 'y')
+      ) {
         isOverlay = true
         break
       }
@@ -46,20 +62,31 @@ export const PlotlyControls = ({ figure, setRevision }: Props) => {
   }
 
   const onToggleOverlay = (overlay: boolean) => {
-    figure.data.forEach((x, i) => {
-      if (!overlay) {
-        (x as ScatterData).yaxis = 'y'
-      } else if (i > 0){
-        (x as ScatterData).yaxis = `y${i+1}`
-      }      
+    figure.data.forEach((dataItem, i) => {
+      Object.keys(dataItem).forEach(key => {
+        if (key === 'xaxis') {
+          if (!overlay) {
+            (dataItem as ScatterData).xaxis = 'x'
+          } else if (i > 0){
+            (dataItem as ScatterData).xaxis = `x${i+1}`
+          }
+        }
+        if (key === 'yaxis') {
+          if (!overlay) {
+            (dataItem as ScatterData).yaxis = 'y'
+          } else if (i > 0){
+            (dataItem as ScatterData).yaxis = `y${i+1}`
+          }
+        }
+      })
     })
 
     // Setting autorange to true will reset the view to show all data
-    for (let i = 0; i < figure.data.length; i++) {
-      const key = `yaxis${i > 0 ? i + 1 : ''}` as keyof Layout
-      ((figure.layout as Layout)[key] as LayoutAxis).autorange = true
-    }
-    figure.layout.xaxis!.autorange = true
+    Object.keys(figure.layout).forEach(key => {
+      if (key.startsWith('xaxis') || key.startsWith('yaxis')) {
+        (figure.layout[key as keyof Layout] as LayoutAxis).autorange = true
+      }
+    })
 
     reRender()
   }
@@ -117,8 +144,8 @@ export const PlotlyControls = ({ figure, setRevision }: Props) => {
               <td>
                 <input
                   type="checkbox"
-                  checked={isAxisVisible(i)}
-                  onChange={e => onToggleAxis(i, e.target.checked)}
+                  checked={isAxisVisible(i, (x as ScatterData).yaxis ? 'y' : 'x')}
+                  onChange={e => onToggleAxis(i, (x as ScatterData).yaxis ? 'y' : 'x', e.target.checked)}
                 />
               </td>
               <td>

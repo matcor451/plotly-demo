@@ -80,7 +80,8 @@ export default function Page () {
             config={{
               // modeBarButtonsToRemove: ['lasso2d'],
               displaylogo: false,
-              scrollZoom: true
+              scrollZoom: true,
+              displayModeBar: true
             }}
             onUpdate={x => {
               if (!isEqual(x, figure)) {

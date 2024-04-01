@@ -27,9 +27,11 @@ export default function Page () {
   const [figure, setFigure] = useState<Figure>()
   const [revision, setRevision] = useState<number>()
   const [selectedPoints, setSelectedPoints] = useState<Dictionary<PlotDatum[]>>()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
     if (dataset) {
+      setIsLoading(true)
       setFigure(cloneDeep({ data: DATASETS[dataset], layout: LAYOUTS[dataset], frames: [] }))
     } else {
       setFigure(undefined)
@@ -66,6 +68,11 @@ export default function Page () {
           )}
         </div>
       }
+      {isLoading &&
+        <div style={{ textAlign: 'center', height: '200px', lineHeight: '200px' }}>
+          LOADING...
+        </div>
+      }
       {figure &&
         <>
           <Plot
@@ -88,6 +95,7 @@ export default function Page () {
                 setFigure(x)
               }
             }}
+            onAfterPlot={() => setIsLoading(false)}
           />
           <Button onClick={onReset}>
             Reset Plot

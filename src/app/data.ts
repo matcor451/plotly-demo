@@ -135,7 +135,7 @@ export const ManyLinesData: Plotly.Data[] = range(1, 16).map(i => (
 
 export const ManyLinesLayout: Partial<Layout> = {
   ...baseLayout,
-  title: 'Many Y axes',
+  title: 'Many plots at once',
   ...Object.fromEntries(ManyLinesData.map((x, i) => (
     [`yaxis${i > 0 ? i + 1 : ''}`, {visible: false, overlaying: i > 0 ? 'y' : undefined}]
   )))

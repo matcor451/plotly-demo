@@ -116,7 +116,7 @@ export const PlotlyControls = ({ figure, setRevision }: Props) => {
       <label>
         <input
           type="checkbox"
-          defaultChecked={false}
+          checked={(figure.data[0] as ScatterData).mode === 'lines+markers'}
           onChange={e => onToggleLines(e.target.checked)}
         />
         Show lines

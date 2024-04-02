@@ -8,18 +8,20 @@ import { Dictionary, cloneDeep, groupBy, isEqual, range } from "lodash";
 import { Button } from "react-bootstrap";
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false, })
 
-import { DepthData, DepthLayout, ManyLinesData, ManyLinesLayout, TimeData, TimeLayout } from "./data";
+import { DepthData, DepthLayout, ManyLinesData, ManyLinesLayout, RealData, RealDataLayout, TimeData, TimeLayout } from "./data";
 
 const DATASETS: Dictionary<Plotly.Data[]> = {
   time: TimeData,
   depth: DepthData,
-  many: ManyLinesData
+  many: ManyLinesData,
+  real: RealData
 }
 
 const LAYOUTS: Dictionary<Partial<Layout>> = {
   time: TimeLayout,
   depth: DepthLayout,
-  many: ManyLinesLayout
+  many: ManyLinesLayout,
+  real: RealDataLayout
 }
 
 export default function Page () {
@@ -56,6 +58,7 @@ export default function Page () {
         <option value='time'>Time Series</option>
         <option value='depth'>Depth Profile</option>
         <option value='many'>Many Params</option>
+        <option value='real'>Real QXF Data</option>
       </select>
       {selectedPoints &&
         <div>

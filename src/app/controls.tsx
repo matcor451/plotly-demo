@@ -105,13 +105,6 @@ export const PlotlyControls = ({ figure, setRevision }: Props) => {
     reRender()
   }
 
-  const onToggleLines = (checked: boolean) => {
-    (figure.data as ScatterData[]).forEach(x => {
-      x.mode = checked ? 'lines+markers' : 'markers'
-    })
-    reRender()
-  }
-
   return (
     <div>
       <label>
@@ -121,14 +114,6 @@ export const PlotlyControls = ({ figure, setRevision }: Props) => {
           onChange={e => onToggleOverlay(e.target.checked)}
         />
         Overlay data
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          checked={(figure.data[0] as ScatterData).mode === 'lines+markers'}
-          onChange={e => onToggleLines(e.target.checked)}
-        />
-        Show lines
       </label>
       <Table>
         <thead>
@@ -141,8 +126,9 @@ export const PlotlyControls = ({ figure, setRevision }: Props) => {
               />
             </th>
             <th>Parameter</th>
+            <th></th>
+            <th>Mode</th>
             <th>Show Axis</th>
-            <th>Colour</th>
           </tr>
         </thead>
         <tbody>
@@ -158,16 +144,29 @@ export const PlotlyControls = ({ figure, setRevision }: Props) => {
               <td>{x.name}</td>
               <td>
                 <input
-                  type="checkbox"
-                  checked={isAxisVisible(i, (x as ScatterData).yaxis ? 'y' : 'x')}
-                  onChange={e => onToggleAxis(i, (x as ScatterData).yaxis ? 'y' : 'x', e.target.checked)}
-                />
-              </td>
-              <td>
-                <input
                   type="color"
                   value={(x as ScatterData).marker.color?.toString()}
                   onChange={e => onColorChange(i, e.target.value)}
+                />
+              </td>
+              <td>
+                <select
+                  value={(x as ScatterData).mode}
+                  onChange={(e) => {
+                    (x as ScatterData).mode = e.target.value
+                    reRender()
+                  }}
+                >
+                  <option value='markers'>Markers</option>
+                  <option value='lines+markers'>Markers+Lines</option>
+                  <option value='lines'>Lines</option>
+                </select>
+              </td>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={isAxisVisible(i, (x as ScatterData).yaxis ? 'y' : 'x')}
+                  onChange={e => onToggleAxis(i, (x as ScatterData).yaxis ? 'y' : 'x', e.target.checked)}
                 />
               </td>
             </tr>

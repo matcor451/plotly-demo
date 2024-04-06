@@ -133,15 +133,14 @@ export const PlotlyControls = ({ figure, setRevision }: Props) => {
       <Table>
         <thead>
           <tr>
-            <th>Parameter</th>
             <th>
-              Show
               <input
                 type='checkbox'
                 checked={visibleTraces.every(x => x)}
                 onChange={e => onToggleAll(e.target.checked)}
               />
             </th>
+            <th>Parameter</th>
             <th>Show Axis</th>
             <th>Colour</th>
           </tr>
@@ -149,7 +148,6 @@ export const PlotlyControls = ({ figure, setRevision }: Props) => {
         <tbody>
           {figure.data.map((x, i) =>
             <tr key={x.name}>
-              <td>{x.name}</td>
               <td>
                 <input
                   type="checkbox"
@@ -157,6 +155,7 @@ export const PlotlyControls = ({ figure, setRevision }: Props) => {
                   onChange={e => onToggle(i, e.target.checked)}
                 />
               </td>
+              <td>{x.name}</td>
               <td>
                 <input
                   type="checkbox"

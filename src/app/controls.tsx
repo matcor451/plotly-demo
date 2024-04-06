@@ -153,7 +153,7 @@ export const PlotlyControls = ({ figure, setRevision }: Props) => {
                 <select
                   value={(x as ScatterData).mode}
                   onChange={(e) => {
-                    (x as ScatterData).mode = e.target.value
+                    (x as ScatterData).mode = (e.target.value as 'markers' | 'lines' | 'lines+markers')
                     reRender()
                   }}
                 >

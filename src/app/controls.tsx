@@ -1,7 +1,7 @@
-import { Layout, LayoutAxis, PlotData, ScatterData } from "plotly.js"
-import { Figure } from "react-plotly.js"
-
-import { Table } from "react-bootstrap"
+import { Layout, LayoutAxis, ScatterData } from 'plotly.js'
+import React from 'react'
+import { Table } from 'react-bootstrap'
+import { Figure } from 'react-plotly.js'
 
 interface Props {
   figure: Figure
@@ -76,15 +76,15 @@ export const PlotlyControls = ({ figure, setRevision }: Props) => {
         if (key === 'xaxis') {
           if (!overlay) {
             (dataItem as ScatterData).xaxis = 'x'
-          } else if (i > 0){
-            (dataItem as ScatterData).xaxis = `x${i+1}`
+          } else if (i > 0) {
+            (dataItem as ScatterData).xaxis = `x${i + 1}`
           }
         }
         if (key === 'yaxis') {
           if (!overlay) {
             (dataItem as ScatterData).yaxis = 'y'
-          } else if (i > 0){
-            (dataItem as ScatterData).yaxis = `y${i+1}`
+          } else if (i > 0) {
+            (dataItem as ScatterData).yaxis = `y${i + 1}`
           }
         }
       })

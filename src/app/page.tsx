@@ -1,14 +1,16 @@
 'use client'
-import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import { Figure } from "react-plotly.js";
-import { Layout, PlotDatum } from "plotly.js";
-import { PlotlyControls } from "./controls";
-import { Dictionary, cloneDeep, groupBy, isEqual, range } from "lodash";
-import { Button } from "react-bootstrap";
-const Plot = dynamic(() => import("react-plotly.js"), { ssr: false, })
+import { Dictionary, cloneDeep, groupBy, isEqual } from 'lodash'
+import dynamic from 'next/dynamic'
+import Plotly, { Layout, PlotDatum } from 'plotly.js'
+import { useEffect, useState } from 'react'
+import { Button } from 'react-bootstrap'
+import { Figure } from 'react-plotly.js'
 
-import { DepthData, DepthLayout, ManyLinesData, ManyLinesLayout, RealData, RealDataLayout, TimeData, TimeLayout } from "./data";
+import { PlotlyControls } from './controls'
+import {
+  DepthData, DepthLayout, ManyLinesData, ManyLinesLayout, RealData, RealDataLayout, TimeData, TimeLayout
+} from './data'
+const Plot = dynamic(() => import('react-plotly.js'), { ssr: false })
 
 const DATASETS: Dictionary<Plotly.Data[]> = {
   time: TimeData,
@@ -64,8 +66,8 @@ export default function Page () {
       </select>
       {selectedPoints &&
         <div>
-          {Object.keys(selectedPoints).map(x =>
-            <div>
+          {Object.keys(selectedPoints).map((x, i) =>
+            <div key={i}>
               {x}: {selectedPoints[x].length} points selected
             </div>
           )}
@@ -81,7 +83,7 @@ export default function Page () {
           <Plot
             style={{
               // height: '100vh',
-              width: '100%',
+              width: '100%'
             }}
             data={figure.data}
             layout={figure.layout}

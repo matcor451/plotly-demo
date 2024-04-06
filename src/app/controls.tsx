@@ -11,8 +11,17 @@ interface Props {
 export const PlotlyControls = ({ figure, setRevision }: Props) => {
   const reRender = () => setRevision(Date.now())
 
+  const visibleTraces = figure.data.map(x => (x as ScatterData).visible === true)
+
   const onToggle = (dataIndex: number, visible: boolean) => {
     (figure.data[dataIndex] as ScatterData).visible = visible ? true : 'legendonly'
+    reRender()
+  }
+
+  const onToggleAll = (visible: boolean) => {
+    figure.data.forEach((x, i) => {
+      (figure.data[i] as ScatterData).visible = visible ? true : 'legendonly'
+    })
     reRender()
   }
 
@@ -125,7 +134,14 @@ export const PlotlyControls = ({ figure, setRevision }: Props) => {
         <thead>
           <tr>
             <th>Parameter</th>
-            <th>Show</th>
+            <th>
+              Show
+              <input
+                type='checkbox'
+                checked={visibleTraces.every(x => x)}
+                onChange={e => onToggleAll(e.target.checked)}
+              />
+            </th>
             <th>Show Axis</th>
             <th>Colour</th>
           </tr>
@@ -137,7 +153,7 @@ export const PlotlyControls = ({ figure, setRevision }: Props) => {
               <td>
                 <input
                   type="checkbox"
-                  checked={(x as ScatterData).visible === true}
+                  checked={visibleTraces[i]}
                   onChange={e => onToggle(i, e.target.checked)}
                 />
               </td>

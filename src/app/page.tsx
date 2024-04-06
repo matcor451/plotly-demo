@@ -3,7 +3,6 @@ import { Dictionary, cloneDeep, groupBy, isEqual } from 'lodash'
 import dynamic from 'next/dynamic'
 import Plotly, { Layout, PlotDatum } from 'plotly.js'
 import { useEffect, useState } from 'react'
-import { Button } from 'react-bootstrap'
 import { Figure } from 'react-plotly.js'
 
 import { PlotlyControls } from './controls'
@@ -90,7 +89,15 @@ export default function Page () {
             revision={revision}
             onSelected={onSelected}
             config={{
-              // modeBarButtonsToRemove: ['lasso2d'],
+              modeBarButtonsToRemove: ['resetScale2d'],
+              modeBarButtonsToAdd: [
+                {
+                  title: 'Reset Plot',
+                  name: 'resetButton',
+                  icon: Plotly.Icons.undo,
+                  click: onReset
+                }
+              ],
               displaylogo: false,
               scrollZoom: true,
               displayModeBar: true
@@ -102,9 +109,6 @@ export default function Page () {
             }}
             onAfterPlot={() => setIsLoading(false)}
           />
-          <Button onClick={onReset}>
-            Reset Plot
-          </Button>
           <PlotlyControls
             setRevision={setRevision}
             figure={figure}

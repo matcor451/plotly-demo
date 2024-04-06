@@ -2,7 +2,8 @@
 /* eslint-disable no-loss-of-precision */
 /* eslint-disable max-len */
 import { Dictionary, range } from 'lodash'
-import Plotly, { Layout } from 'plotly.js'
+import { Layout } from 'plotly.js'
+import type Plotly from 'plotly.js'
 
 const NUM_POINTS = 1000
 

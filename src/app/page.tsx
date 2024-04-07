@@ -30,7 +30,7 @@ export default function Page () {
   const [dataset, setDataset] = useState<string>()
   const [figure, setFigure] = useState<Figure>()
   const [revision, setRevision] = useState<number>()
-  const [selectedPoints, setSelectedPoints] = useState<Dictionary<PlotDatum[]>>()
+  const [selectedPoints, setSelectedPoints] = useState<{[key: string]: PlotDatum[]}>()
 
   useEffect(() => {
     if (dataset) {
@@ -62,23 +62,18 @@ export default function Page () {
         <option value='many'>Many Params</option>
         <option value='real'>Real QXF Data</option>
       </select>
-      {selectedPoints &&
-        <div>
-          {Object.keys(selectedPoints).map((x, i) =>
-            <div key={i}>
-              {x}: {selectedPoints[x].length} points selected
-            </div>
-          )}
-        </div>
-      }
-      <ControlBar figure={figure} setRevision={setRevision} />
+      <ControlBar
+        figure={figure}
+        setRevision={setRevision}
+        selectedPoints={selectedPoints}
+      />
       {figure &&
         <>
           <Plot
             style={{
               // height: '100vh',
-              width: 'calc(100% - 50px)',
-              marginLeft: '50px'
+              width: 'calc(100% - 100px)',
+              marginLeft: '100px'
             }}
             data={figure.data}
             layout={figure.layout}

@@ -101,7 +101,8 @@ export default function Page () {
               ],
               displaylogo: false,
               scrollZoom: true,
-              displayModeBar: true
+              displayModeBar: true,
+              responsive: true
             }}
             onUpdate={x => {
               if (!isEqual(x, figure)) {

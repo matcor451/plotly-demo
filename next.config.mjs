@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  basePath: '/plotly-demo'
-};
+  output: 'export'
+}
 
-export default nextConfig;
+export default nextConfig

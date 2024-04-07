@@ -6,7 +6,7 @@ import type Plotly from 'plotly.js'
 import { useEffect, useState } from 'react'
 import { Figure } from 'react-plotly.js'
 
-import { PlotlyControls } from './controls'
+import { ControlBar } from './ControlBar'
 import {
   DepthData, DepthLayout, ManyLinesData, ManyLinesLayout, RealData, RealDataLayout, TimeData, TimeLayout
 } from './data'
@@ -31,11 +31,9 @@ export default function Page () {
   const [figure, setFigure] = useState<Figure>()
   const [revision, setRevision] = useState<number>()
   const [selectedPoints, setSelectedPoints] = useState<Dictionary<PlotDatum[]>>()
-  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
     if (dataset) {
-      setIsLoading(true)
       setFigure(cloneDeep({ data: DATASETS[dataset], layout: LAYOUTS[dataset], frames: [] }))
     } else {
       setFigure(undefined)
@@ -73,17 +71,14 @@ export default function Page () {
           )}
         </div>
       }
-      {isLoading &&
-        <div style={{ textAlign: 'center', height: '200px', lineHeight: '200px' }}>
-          LOADING...
-        </div>
-      }
+      <ControlBar figure={figure} setRevision={setRevision} />
       {figure &&
         <>
           <Plot
             style={{
               // height: '100vh',
-              width: '100%'
+              width: 'calc(100% - 50px)',
+              marginLeft: '50px'
             }}
             data={figure.data}
             layout={figure.layout}
@@ -113,11 +108,6 @@ export default function Page () {
                 setFigure(x)
               }
             }}
-            onAfterPlot={() => setIsLoading(false)}
-          />
-          <PlotlyControls
-            setRevision={setRevision}
-            figure={figure}
           />
         </>
       }

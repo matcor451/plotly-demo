@@ -8,7 +8,7 @@ interface Props {
   setRevision: React.Dispatch<React.SetStateAction<number | undefined>>
 }
 
-export const PlotlyControls = ({ figure, setRevision }: Props) => {
+export const PlotControls = ({ figure, setRevision }: Props) => {
   const reRender = () => setRevision(Date.now())
 
   const visibleTraces = figure.data.map(x => (x as ScatterData).visible === true)

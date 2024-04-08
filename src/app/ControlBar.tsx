@@ -82,7 +82,8 @@ export const ControlBar = ({ figure, selectedPoints, setRevision }: Props) => {
             height: '100%',
             width: '800px',
             border: '1px solid magenta',
-            backgroundColor: 'white'
+            backgroundColor: 'white',
+            overflowY: 'auto'
           }}
         >
           {activeTab === CONFIG_TAB && figure &&

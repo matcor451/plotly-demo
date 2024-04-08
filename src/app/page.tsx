@@ -72,8 +72,8 @@ export default function Page () {
           <Plot
             style={{
               // height: '100vh',
-              width: 'calc(100% - 100px)',
-              marginLeft: '100px'
+              width: 'calc(60% - 100px)',
+              marginLeft: 'calc(40% + 100px)'
             }}
             data={figure.data}
             layout={figure.layout}

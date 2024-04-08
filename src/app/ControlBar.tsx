@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { PlotDatum } from 'plotly.js'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Badge } from 'react-bootstrap'
 import { Figure } from 'react-plotly.js'
 
@@ -21,13 +21,16 @@ interface Props {
 export const ControlBar = ({ figure, selectedPoints, setRevision }: Props) => {
   const [activeTab, setActiveTab] = useState<TABS_TYPE>(CONFIG_TAB)
 
+  useEffect(() => {
+    setRevision(Date.now())
+  }, [activeTab])
+
   const MenuIcon = ({ count, svgPath, tab }: any) => (
     <div
       onClick={() => setActiveTab(activeTab === tab ? undefined : tab)}
       style={{
         cursor: 'pointer',
-        textAlign: 'center',
-        paddingBottom: '10px',
+        padding: '10px',
         position: 'relative',
         backgroundColor: tab === activeTab ? 'magenta' : 'white'
       }}
@@ -49,11 +52,8 @@ export const ControlBar = ({ figure, selectedPoints, setRevision }: Props) => {
     <>
       <div
         style={{
-          position: 'absolute',
           height: '100%',
           zIndex: 999,
-          // width: activeTab ? '50%' : '50px',
-          width: '100px',
           border: '1px solid magenta',
           backgroundColor: 'white'
         }}
@@ -79,11 +79,8 @@ export const ControlBar = ({ figure, selectedPoints, setRevision }: Props) => {
       {activeTab &&
         <div
           style={{
-            position: 'absolute',
-            left: '100px',
             height: '100%',
-            zIndex: 999,
-            width: '40%',
+            width: '800px',
             border: '1px solid magenta',
             backgroundColor: 'white'
           }}

@@ -62,18 +62,16 @@ export default function Page () {
         <option value='many'>Many Params</option>
         <option value='real'>Real QXF Data</option>
       </select>
-      <ControlBar
-        figure={figure}
-        setRevision={setRevision}
-        selectedPoints={selectedPoints}
-      />
       {figure &&
-        <>
+        <div style={{ display: 'flex', height: 'calc(100vh - 50px)' }}>
+          <ControlBar
+            figure={figure}
+            setRevision={setRevision}
+            selectedPoints={selectedPoints}
+          />
           <Plot
             style={{
-              // height: '100vh',
-              width: 'calc(60% - 100px)',
-              marginLeft: 'calc(40% + 100px)'
+              width: '100%'
             }}
             data={figure.data}
             layout={figure.layout}
@@ -116,7 +114,7 @@ export default function Page () {
               }
             }}
           />
-        </>
+        </div>
       }
     </div>
   )

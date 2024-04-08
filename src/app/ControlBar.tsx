@@ -35,7 +35,7 @@ export const ControlBar = ({ figure, selectedPoints, setRevision }: Props) => {
         backgroundColor: tab === activeTab ? 'magenta' : 'white'
       }}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" height='30px'>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height='30px'>
         {svgPath}
       </svg>
       {!!count &&

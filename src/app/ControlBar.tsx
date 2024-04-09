@@ -5,6 +5,7 @@ import { Badge } from 'react-bootstrap'
 import { Figure } from 'react-plotly.js'
 
 import { PlotControls } from './PlotControls'
+import { SelectedPoints } from './SelectedPoints'
 
 const CONFIG_TAB = 'config'
 const SELECTED_TAB = 'selected'
@@ -93,18 +94,10 @@ export const ControlBar = ({ figure, selectedPoints, setRevision }: Props) => {
             />
           }
           {activeTab === SELECTED_TAB && figure &&
-            <div>
-              {selectedPoints
-                ? <div>
-                    {Object.keys(selectedPoints).map((x, i) =>
-                      <div key={i}>
-                        {x}: {selectedPoints[x].length} points selected
-                      </div>
-                    )}
-                  </div>
-                : <div>No points selected yet</div>
-              }
-            </div>
+            <SelectedPoints
+              figure={figure}
+              selectedPoints={selectedPoints}
+            />
           }
           {activeTab === OTTER_TAB &&
             <div>

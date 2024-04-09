@@ -194,6 +194,18 @@ export const RealData: Plotly.Data[] = Object.keys(data).map((key, i) => (
     name: key,
     mode: 'markers',
     marker: { color: COLOURS[i % COLOURS.length] },
+    selected: {
+      marker: {
+        color: COLOURS[i % COLOURS.length],
+        opacity: 1
+      }
+    },
+    unselected: {
+      marker: {
+        color: COLOURS[i % COLOURS.length],
+        opacity: 0.2
+      }
+    },
     yaxis: (i > 0 ? `y${i}` : 'y'),
     visible: true
   }

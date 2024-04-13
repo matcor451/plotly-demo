@@ -31,14 +31,25 @@ export default function Page () {
   const [figure, setFigure] = useState<Figure>()
   const [revision, setRevision] = useState<number>()
   const [selectedPoints, setSelectedPoints] = useState<{[key: string]: PlotDatum[]}>()
+  const [activePlot, setActivePlot] = useState<string>()
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     if (dataset) {
-      setFigure(cloneDeep({ data: DATASETS[dataset], layout: LAYOUTS[dataset], frames: [] }))
+      setActivePlot(dataset)
+      setFigure(undefined)
+      setIsLoading(true)
     } else {
+      setActivePlot(undefined)
       setFigure(undefined)
     }
   }, [dataset])
+
+  useEffect(() => {
+    if (activePlot && !figure) {
+      setFigure(cloneDeep({ data: DATASETS[activePlot], layout: LAYOUTS[activePlot], frames: [] }))
+    }
+  }, [activePlot, figure])
 
   const onSelected = (e: Plotly.PlotSelectionEvent) => {
     if (!e) {
@@ -55,6 +66,23 @@ export default function Page () {
 
   return (
     <div>
+      {isLoading &&
+        <div
+          style={{
+            position: 'absolute',
+            height: '100%',
+            width: '100%',
+            zIndex: 9999,
+            pointerEvents: 'none',
+            backgroundColor: 'rgba(0, 0, 0, 0.1)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <h1>Loading...</h1>
+        </div>
+      }
       <div style={{ display: 'flex', height: '100vh' }}>
         <ControlBar
           figure={figure}
@@ -108,6 +136,7 @@ export default function Page () {
                 setFigure(x)
               }
             }}
+            onInitialized={() => setIsLoading(false)}
           />
         }
       </div>

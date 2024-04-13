@@ -31,7 +31,9 @@ export const ControlBar = ({ dataset, figure, selectedPoints, setDataset, setRev
   }, [activeTab])
 
   useEffect(() => {
-    setActiveTab(CONFIG_TAB)
+    if (dataset) {
+      setActiveTab(CONFIG_TAB)
+    }
   }, [dataset])
 
   const MenuIcon = ({ count, disabled, svgPath, tab }: any) => (

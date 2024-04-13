@@ -55,20 +55,15 @@ export default function Page () {
 
   return (
     <div>
-      <select onChange={e => setDataset(e.target.value)}>
-        <option></option>
-        <option value='time'>Time Series</option>
-        <option value='depth'>Depth Profile</option>
-        <option value='many'>Many Params</option>
-        <option value='real'>Real QXF Data</option>
-      </select>
-      {figure &&
-        <div style={{ display: 'flex', height: 'calc(100vh - 50px)' }}>
-          <ControlBar
-            figure={figure}
-            setRevision={setRevision}
-            selectedPoints={selectedPoints}
-          />
+      <div style={{ display: 'flex', height: '100vh' }}>
+        <ControlBar
+          figure={figure}
+          setRevision={setRevision}
+          selectedPoints={selectedPoints}
+          dataset={dataset}
+          setDataset={setDataset}
+        />
+        {figure &&
           <Plot
             style={{
               width: '100%'
@@ -114,8 +109,8 @@ export default function Page () {
               }
             }}
           />
-        </div>
-      }
+        }
+      </div>
     </div>
   )
 }

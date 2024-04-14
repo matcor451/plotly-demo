@@ -74,13 +74,19 @@ export default function Page () {
             width: '100%',
             zIndex: 9999,
             pointerEvents: 'none',
-            backgroundColor: 'rgba(0, 0, 0, 0.1)',
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center'
           }}
         >
-          <h1>Loading...</h1>
+          <h1
+            style={{
+              backgroundImage: 'linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red)',
+              WebkitBackgroundClip: 'text',
+              color: 'transparent'
+            }}
+          >Loading...</h1>
         </div>
       }
       <div style={{ display: 'flex', height: '100vh' }}>

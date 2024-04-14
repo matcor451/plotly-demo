@@ -23,7 +23,9 @@ export const SelectedPoints = ({ figure, flaggedPoints, selectedPoints, setFlagg
   }
 
   const onChangeFlag = (point: PlotDatum, flag?: string) => {
-    const updatedFlags = cloneDeep(flaggedPoints) || []
+    let updatedFlags = cloneDeep(flaggedPoints) || []
+    // Remove point from existing list first
+    updatedFlags = updatedFlags.filter(x => x.pointIndex !== point.pointIndex)
     if (flag) {
       updatedFlags?.push({ traceName: point.data.name, pointIndex: point.pointIndex, flag })
     }

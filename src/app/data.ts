@@ -23,6 +23,12 @@ const COLOURS = [
   '#FFA500'
 ]
 
+const createMarker = (index: number) => ({
+  color: COLOURS[index % COLOURS.length],
+  line: { width: 0 },
+  opacity: 1
+})
+
 const baseLayout: Partial<Layout> = {
   autosize: true,
   dragmode: 'pan',
@@ -36,7 +42,7 @@ export const TimeData: Plotly.Data[] = [
     y: range(NUM_POINTS).map(x => x ** 0.5),
     name: 'Temperature',
     mode: 'markers',
-    marker: { color: COLOURS[0] },
+    marker: createMarker(0),
     yaxis: 'y',
     visible: true
   },
@@ -46,7 +52,7 @@ export const TimeData: Plotly.Data[] = [
     y: range(NUM_POINTS).map(x => x + x * Math.cos(0.1 * x)),
     name: 'Pressure',
     mode: 'markers',
-    marker: { color: COLOURS[1] },
+    marker: createMarker(1),
     yaxis: 'y2',
     visible: true
   },
@@ -56,7 +62,7 @@ export const TimeData: Plotly.Data[] = [
     y: range(NUM_POINTS).map(x => x ** 1.5),
     name: 'Wetness',
     mode: 'markers',
-    marker: { color: COLOURS[2] },
+    marker: createMarker(2),
     yaxis: 'y3',
     visible: true
   }
@@ -83,7 +89,7 @@ export const DepthData: Plotly.Data[] = [
     y: range(NUM_POINTS),
     name: 'Temperature',
     mode: 'markers',
-    marker: { color: COLOURS[0] },
+    marker: createMarker(0),
     xaxis: 'x',
     visible: true
   },
@@ -93,7 +99,7 @@ export const DepthData: Plotly.Data[] = [
     y: range(NUM_POINTS),
     name: 'Wetness',
     mode: 'markers',
-    marker: { color: COLOURS[1] },
+    marker: createMarker(1),
     xaxis: 'x2',
     visible: true
   },
@@ -103,7 +109,7 @@ export const DepthData: Plotly.Data[] = [
     y: range(NUM_POINTS),
     name: 'Pressure',
     mode: 'markers',
-    marker: { color: COLOURS[2] },
+    marker: createMarker(2),
     xaxis: 'x3',
     visible: true
   }
@@ -131,7 +137,7 @@ export const ManyLinesData: Plotly.Data[] = range(1, 16).map(i => (
     y: range(NUM_POINTS).map(x => (x - 50 * i) ** 2),
     name: `Param ${i}`,
     mode: 'markers',
-    marker: { color: COLOURS[i % COLOURS.length] },
+    marker: createMarker(i),
     yaxis: `y${i}`,
     visible: true
   }
@@ -193,7 +199,7 @@ export const RealData: Plotly.Data[] = Object.keys(data).map((key, i) => (
     y: data[key],
     name: key,
     mode: 'markers',
-    marker: { color: COLOURS[i % COLOURS.length] },
+    marker: createMarker(i),
     selected: {
       marker: {
         color: COLOURS[i % COLOURS.length],

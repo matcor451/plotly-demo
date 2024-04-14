@@ -42,6 +42,7 @@ export default function Page () {
   const [flaggedPoints, setFlaggedPoints] = useState<FlaggedPoint[]>([])
 
   useEffect(() => {
+    setFlaggedPoints([])
     if (dataset) {
       setActivePlot(dataset)
       setFigure(undefined)
@@ -63,7 +64,14 @@ export default function Page () {
       const flaggedIndices = flaggedPoints.filter(x => x.traceName === trace.name).map(x => x.pointIndex)
       const scatterTrace = (figure?.data[i] as ScatterData)
       scatterTrace.marker.symbol = range(scatterTrace.x.length).map(i =>
-        flaggedIndices.includes(i) ? 'star' : 'circle'
+        flaggedIndices.includes(i) ? 'x' : 'circle'
+      )
+      scatterTrace.text = range(scatterTrace.x.length).map(i => {
+        const flag = flaggedPoints.find(x => x.traceName === trace.name && x.pointIndex === i)?.flag
+        return flaggedIndices.includes(i) ? `Flag: ${flag}` : ''
+      })
+      scatterTrace.marker.size = range(scatterTrace.x.length).map(i =>
+        flaggedIndices.includes(i) ? 10 : 6
       )
     })
     setRevision(Date.now())

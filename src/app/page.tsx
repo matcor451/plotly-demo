@@ -1,7 +1,7 @@
 'use client'
-import { Dictionary, cloneDeep, groupBy, isEqual } from 'lodash'
+import { Dictionary, cloneDeep, groupBy, isEqual, range } from 'lodash'
 import dynamic from 'next/dynamic'
-import { Layout, PlotDatum } from 'plotly.js'
+import { Layout, PlotDatum, ScatterData } from 'plotly.js'
 import type Plotly from 'plotly.js'
 import { useEffect, useState } from 'react'
 import { Figure } from 'react-plotly.js'
@@ -26,6 +26,12 @@ const LAYOUTS: Dictionary<Partial<Layout>> = {
   real: RealDataLayout
 }
 
+export interface FlaggedPoint {
+  traceName: string
+  pointIndex: number
+  flag: string
+}
+
 export default function Page () {
   const [dataset, setDataset] = useState<string>()
   const [figure, setFigure] = useState<Figure>()
@@ -33,6 +39,7 @@ export default function Page () {
   const [selectedPoints, setSelectedPoints] = useState<{[key: string]: PlotDatum[]}>()
   const [activePlot, setActivePlot] = useState<string>()
   const [isLoading, setIsLoading] = useState(false)
+  const [flaggedPoints, setFlaggedPoints] = useState<FlaggedPoint[]>([])
 
   useEffect(() => {
     if (dataset) {
@@ -50,6 +57,17 @@ export default function Page () {
       setFigure(cloneDeep({ data: DATASETS[activePlot], layout: LAYOUTS[activePlot], frames: [] }))
     }
   }, [activePlot, figure])
+
+  useEffect(() => {
+    figure?.data.forEach((trace, i) => {
+      const flaggedIndices = flaggedPoints.filter(x => x.traceName === trace.name).map(x => x.pointIndex)
+      const scatterTrace = (figure?.data[i] as ScatterData)
+      scatterTrace.marker.symbol = range(scatterTrace.x.length).map(i =>
+        flaggedIndices.includes(i) ? 'star' : 'circle'
+      )
+    })
+    setRevision(Date.now())
+  }, [figure, flaggedPoints])
 
   const onSelected = (e: Plotly.PlotSelectionEvent) => {
     if (!e) {
@@ -96,6 +114,8 @@ export default function Page () {
           selectedPoints={selectedPoints}
           dataset={dataset}
           setDataset={setDataset}
+          flaggedPoints={flaggedPoints}
+          setFlaggedPoints={setFlaggedPoints}
         />
         {figure &&
           <Plot
@@ -109,17 +129,6 @@ export default function Page () {
             config={{
               modeBarButtonsToRemove: ['resetScale2d'],
               modeBarButtonsToAdd: [
-                {
-                  title: 'Flag Points',
-                  name: 'flagButton',
-                  icon: {
-                    width: 500,
-                    height: 600,
-                    // eslint-disable-next-line max-len
-                    path: 'M64 32C64 14.3 49.7 0 32 0S0 14.3 0 32V64 368 480c0 17.7 14.3 32 32 32s32-14.3 32-32V352l64.3-16.1c41.1-10.3 84.6-5.5 122.5 13.4c44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0c-35.1-17.6-75.4-22-113.5-12.5L64 48V32z'
-                  },
-                  click: console.log
-                },
                 {
                   title: 'Reset Plot',
                   name: 'resetButton',

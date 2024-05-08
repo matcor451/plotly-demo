@@ -6,6 +6,8 @@ import { Figure } from 'react-plotly.js'
 
 import { FlaggedPoint } from './page'
 
+const FLAGS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
 interface Props {
   figure: Figure
   selectedPoints?: {[key: string]: PlotDatum[]}
@@ -22,13 +24,15 @@ export const SelectedPoints = ({ figure, flaggedPoints, selectedPoints, setFlagg
     }
   }
 
-  const onChangeFlag = (point: PlotDatum, flag?: string) => {
+  const onChangeFlags = (points: PlotDatum[], flag?: string) => {
     let updatedFlags = cloneDeep(flaggedPoints) || []
-    // Remove point from existing list first
-    updatedFlags = updatedFlags.filter(x => x.pointIndex !== point.pointIndex)
-    if (flag) {
-      updatedFlags?.push({ traceName: point.data.name, pointIndex: point.pointIndex, flag })
-    }
+    points.forEach(point => {
+      // Remove point from existing list first
+      updatedFlags = updatedFlags.filter(x => x.pointIndex !== point.pointIndex)
+      if (flag) {
+        updatedFlags?.push({ traceName: point.data.name, pointIndex: point.pointIndex, flag })
+      }
+    })
     setFlaggedPoints(updatedFlags)
   }
 
@@ -50,7 +54,15 @@ export const SelectedPoints = ({ figure, flaggedPoints, selectedPoints, setFlagg
                       <tr>
                         <th>x</th>
                         <th>y</th>
-                        <th>Flag</th>
+                        <th>
+                          Flag
+                          <select onChange={e => onChangeFlags(selectedPoints[x], e.target.value)}>
+                            <option value=''></option>
+                            {FLAGS.split('').map(flag =>
+                              <option key={flag} value={flag}>{flag}</option>
+                            )}
+                          </select>
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -59,9 +71,16 @@ export const SelectedPoints = ({ figure, flaggedPoints, selectedPoints, setFlagg
                           <td>{point.x?.toString()}</td>
                           <td>{point.y?.toString()}</td>
                           <td>
-                            <select onChange={e => onChangeFlag(point, e.target.value)}>
+                            <select
+                              value={
+                                flaggedPoints?.find(fp =>
+                                  fp.traceName === x && fp.pointIndex === point.pointIndex
+                                )?.flag || ''
+                              }
+                              onChange={e => onChangeFlags([point], e.target.value)}
+                            >
                               <option value=''></option>
-                              {'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(flag =>
+                              {FLAGS.split('').map(flag =>
                                 <option key={flag} value={flag}>{flag}</option>
                               )}
                             </select>

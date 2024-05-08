@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { Badge, Form } from 'react-bootstrap'
 import { Figure } from 'react-plotly.js'
 
+import { FlaggedPoints } from './FlaggedPoints'
 import { FlaggedPoint } from './page'
 import { PlotControls } from './PlotControls'
 import { SelectedPoints } from './SelectedPoints'
@@ -136,7 +137,7 @@ export const ControlBar = ({ dataset, figure, flaggedPoints, selectedPoints, set
             />
           }
           {activeTab === FLAGS_TAB && figure &&
-            <div>No points flagged yet</div>
+            <FlaggedPoints figure={figure} flaggedPoints={flaggedPoints} />
           }
           {activeTab === OTTER_TAB &&
             <div>

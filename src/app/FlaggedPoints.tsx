@@ -2,6 +2,7 @@ import { Table } from 'react-bootstrap'
 import { Figure } from 'react-plotly.js'
 
 import { FlaggedPoint } from './page'
+import { ScatterData } from 'plotly.js'
 
 interface Props {
   figure: Figure
@@ -26,8 +27,8 @@ export const FlaggedPoints = ({ figure, flaggedPoints }: Props) => {
             <tr key={idx}>
               <td>{point.traceName}</td>
               <td>
-                {figure.data.find(x => x.name === point.traceName)?.x[point.pointIndex]},
-                {figure.data.find(x => x.name === point.traceName)?.y[point.pointIndex]}
+                {(figure.data.find(x => x.name === point.traceName) as ScatterData)?.x[point.pointIndex]?.toString()},
+                {(figure.data.find(x => x.name === point.traceName) as ScatterData)?.y[point.pointIndex]?.toString()}
               </td>
               <td>{point.flag}</td>
             </tr>

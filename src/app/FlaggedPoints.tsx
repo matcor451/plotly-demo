@@ -1,8 +1,8 @@
+import { ScatterData } from 'plotly.js'
 import { Table } from 'react-bootstrap'
 import { Figure } from 'react-plotly.js'
 
 import { FlaggedPoint } from './page'
-import { ScatterData } from 'plotly.js'
 
 interface Props {
   figure: Figure
